@@ -1,24 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import { ThemeProvider } from "styled-components";
+import AppRouter from "./routers/AppRouter";
+import GlobalStyles from "./styles/Global.styles";
+import { lightTheme, darkTheme } from "./styles/theme";
+import AuthContextProvider from "./context/AuthContext";
+import BooksContextProvider from "./context/BooksContext";
+import { useThemeContext } from "./context/ThemeContext";
+import { BrowserRouter } from "react-router-dom";
 
 function App() {
+  const { themeMode } = useThemeContext();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={themeMode ? lightTheme : darkTheme}>
+      <GlobalStyles />
+      <AuthContextProvider>
+        <BooksContextProvider>
+          <BrowserRouter>
+            <AppRouter />
+          </BrowserRouter>
+        </BooksContextProvider>
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }
 
